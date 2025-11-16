@@ -1,0 +1,38 @@
+---
+---
+<script is:inline>
+  (function () {
+    if (typeof window === 'undefined' || typeof IntersectionObserver === 'undefined') {
+      return;
+    }
+
+    const onReady = () => {
+      const elements = document.querySelectorAll('.sr');
+      if (!elements.length) return;
+
+      // najskôr nastavíme východzí stav
+      elements.forEach((el) => el.classList.add('sr-init'));
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              entry.target.classList.remove('sr-init');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.18 }
+      );
+
+      elements.forEach((el) => observer.observe(el));
+    };
+
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      onReady();
+    } else {
+      document.addEventListener('DOMContentLoaded', onReady, { once: true });
+    }
+  })();
+</script>

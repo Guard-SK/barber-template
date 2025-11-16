@@ -1,0 +1,149 @@
+---
+import Section from './Section.astro';
+import SectionHeader from './SectionHeader.astro';
+import Button from './Button.astro';
+
+interface About {
+  title: string;
+  tagline?: string;
+  body: string[];
+  highlights?: string[];
+}
+
+interface TeamMember {
+  name: string;
+  role: string;
+  bio: string;
+  imageAlt?: string;
+  bookingLabel?: string;
+}
+
+interface Team {
+  enabled?: boolean;
+  members: TeamMember[];
+}
+
+interface Review {
+  quote: string;
+  name: string;
+  label?: string;
+}
+
+interface Props {
+  about: About;
+  team: Team;
+  reviews: Review[];
+}
+
+const { about, team, reviews } = Astro.props;
+---
+<Section id="about">
+  {/* O nás */}
+  <div class="grid gap-10 md:grid-cols-[1.2fr_minmax(0,1fr)] md:items-start">
+    <div>
+      <SectionHeader
+        eyebrow="O nás"
+        title={about.title}
+        subtitle={about.tagline}
+      />
+      <div class="space-y-3 text-sm text-foreground/75">
+        {about.body.map((paragraph) => (
+          <p>{paragraph}</p>
+        ))}
+      </div>
+      {about.highlights && about.highlights.length > 0 && (
+        <div class="mt-5 flex flex-wrap gap-2">
+          {about.highlights.map((item) => (
+            <span class="tag-pill">
+              {item}
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+
+    {/* Malý social proof blok */}
+    <div class="glass rounded-2xl p-5 text-sm">
+      <h3 class="mb-2 text-sm font-semibold">
+        Nie je to len o strihu
+      </h3>
+      <p class="text-foreground/70">
+        Chceme, aby si si k nám neprišiel iba „dať do poriadku vlasy“, ale
+        vypnúť hlavu. Káva, dobrá hudba a normálny pokec sú súčasťou servisu.
+      </p>
+      <div class="mt-4 rounded-2xl bg-primary-soft/70 p-3 text-xs text-accent">
+        „Najlepší barbershop v meste. Konečne miesto, kde sa cítim ako človek,
+        nie ako položka v kalendári.“
+        <div class="mt-1 font-medium">— anonymná recenzia z Google</div>
+      </div>
+    </div>
+  </div>
+
+  {/* Tím – voliteľný, anchor id=team */}
+  {team?.enabled && team.members?.length > 0 && (
+    <div id="team" class="mt-16 md:mt-20">
+      <SectionHeader
+        eyebrow="Tím"
+        title="Kto sa o teba postará"
+        subtitle="Vyber si barbera podľa štýlu, ktorý ti sedí. Každý z nás má trochu iný rukopis, ale rovnaký prístup k detailu."
+      />
+      <div class="grid gap-5 md:grid-cols-3">
+        {team.members.map((member) => (
+          <article class="glass flex h-full flex-col rounded-2xl p-5">
+            <div class="mb-3 h-32 overflow-hidden rounded-xl bg-muted">
+              <div class="flex h-full items-center justify-center text-[11px] text-foreground/50">
+                {member.imageAlt || 'Foto barbera'}
+              </div>
+            </div>
+            <h3 class="text-sm font-semibold tracking-tight">
+              {member.name}
+            </h3>
+            <p class="mt-1 text-[11px] uppercase tracking-wide text-foreground/55">
+              {member.role}
+            </p>
+            <p class="mt-3 flex-1 text-xs text-foreground/70">
+              {member.bio}
+            </p>
+            {member.bookingLabel && (
+              <div class="mt-4">
+                <Button
+                  href="#booking"
+                  label={member.bookingLabel}
+                  size="sm"
+                  variant="outline"
+                />
+              </div>
+            )}
+          </article>
+        ))}
+      </div>
+    </div>
+  )}
+
+  {/* Recenzie – anchor id=reviews */}
+  {reviews?.length > 0 && (
+    <div id="reviews" class="mt-16 md:mt-20">
+      <SectionHeader
+        eyebrow="Recenzie"
+        title="Čo hovoria naši klienti"
+        subtitle="Najlepší marketing je spokojný klient, ktorý sa vracia. Toto sú slová tých našich."
+      />
+      <div class="grid gap-5 md:grid-cols-3">
+        {reviews.map((review) => (
+          <figure class="glass flex h-full flex-col rounded-2xl p-5 text-sm">
+            <div class="text-xl leading-none text-primary">“</div>
+            <blockquote class="mt-2 flex-1 text-xs text-foreground/80">
+              {review.quote}
+            </blockquote>
+            <figcaption class="mt-3 text-xs">
+              <div class="font-semibold text-foreground/90">{review.name}</div>
+              {review.label && (
+                <div class="text-[11px] text-foreground/60">{review.label}</div>
+              )}
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  )}
+</Section>

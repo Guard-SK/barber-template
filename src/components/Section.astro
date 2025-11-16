@@ -1,0 +1,24 @@
+---
+interface Props {
+  id?: string;
+  tone?: 'default' | 'muted' | 'accent';
+  className?: string;
+}
+
+const { id, tone = 'default', className } = Astro.props;
+
+const toneClass =
+  tone === 'muted'
+    ? 'bg-muted'
+    : tone === 'accent'
+    ? 'bg-muted-strong'
+    : 'bg-background';
+---
+<section
+  id={id}
+  class={`border-t border-border/40 ${toneClass} py-16 md:py-24 ${className || ''}`}
+>
+  <div class="container max-w-6xl">
+    <slot />
+  </div>
+</section>

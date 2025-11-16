@@ -1,0 +1,44 @@
+---
+import Section from './Section.astro';
+
+interface Image {
+  src: string;
+  alt?: string;
+}
+
+interface Props {
+  id?: string;
+  gallery: {
+    images: Image[];
+  };
+}
+
+const { id = 'gallery', gallery } = Astro.props;
+---
+<Section id={id} tone="default">
+  <div class="mb-8 max-w-xl sr">
+    <h2 class="text-3xl md:text-4xl font-semibold tracking-tight">
+      Galéria
+    </h2>
+    <p class="mt-3 text-sm text-foreground/75">
+      Detail prechodu, čistá línia brady, atmosféra v kresle. Takto vyzerá
+      barbershop v praxi.
+    </p>
+  </div>
+
+  <div class="grid gap-3 md:grid-cols-3">
+    {gallery.images.map((image, index) => (
+      <div
+        class="sr relative aspect-[4/5] overflow-hidden rounded-2xl bg-muted-strong"
+        style={`transition-delay: ${60 + index * 40}ms;`}
+      >
+        <img
+          src={image.src}
+          alt={image.alt}
+          loading="lazy"
+          class="h-full w-full object-cover transition-transform duration-500 hover:scale-[1.05]"
+        />
+      </div>
+    ))}
+  </div>
+</Section>

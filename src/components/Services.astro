@@ -1,0 +1,62 @@
+---
+import Section from './Section.astro';
+
+interface Service {
+  name: string;
+  description: string;
+  icon?: string;
+  imageSrc?: string;
+  imageAlt?: string;
+}
+
+interface Props {
+  id?: string;
+  services: Service[];
+}
+
+const { id = 'services-list', services } = Astro.props;
+---
+<Section
+  id={id}
+  tone="default"
+  className="-mt-6 md:-mt-10 lg:-mt-12 pt-22 md:pt-26 border-t-0"
+>
+  {/* skrytý nadpis kvôli a11y – vizuálny „SLUŽBY“ je v Hero */}
+  <div class="sr mb-6 text-center">
+    <h2 class="sr-only">Služby</h2>
+  </div>
+
+  <div class="sr md:mx-0 xl:mx-[-3rem]">
+    <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      {services.map((service, index) => (
+        <article
+          class="group relative overflow-hidden bg-muted-strong"
+          style={`transition-delay: ${index * 40}ms;`}
+        >
+          <div class="relative h-80 md:h-96 w-full">
+            <img
+              src={service.imageSrc || '/services/default.jpg'}
+              alt={
+                service.imageAlt ||
+                `Ukážka služby ${service.name} v barbershope.`
+              }
+              loading="lazy"
+              class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+            />
+
+            <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/95 via-black/65 to-transparent" />
+
+            <div class="absolute inset-x-0 bottom-0 p-4">
+              <h3 class="text-sm font-semibold text-white drop-shadow-[0_10px_30px_rgba(0,0,0,0.9)]">
+                {service.name}
+              </h3>
+              <p class="mt-1 text-[11px] text-white/85 line-clamp-2 drop-shadow-[0_8px_24px_rgba(0,0,0,0.85)]">
+                {service.description}
+              </p>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</Section>

@@ -1,0 +1,201 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Dark prestige theme v HSL */
+:root {
+  /* neutrálne dark grey, nie modrofialová */
+  --color-background: 55 15% 6%;        /* #0b0d10 approx */
+  --color-muted: 55 9% 10%;            /* surface */
+  --color-muted-strong: 55 11% 14%;     /* accent band (reviews, cards) */
+
+  --color-foreground: 55 35% 96%;       /* text – nie čistá biela, ale veľmi svetlá */
+  --color-border: 55 12% 26%;
+
+  /* zlatý akcent – mäkké, nie neónové */
+  --color-primary: 43 90% 60%;           /* hlavné CTA – teplé zlato */
+  --color-primary-soft: 43 90% 72%;      /* jemnejšie zlato na sekundárne prvky */
+  --color-accent: 40 85% 70%;            /* zvýraznenia textu, linky */
+
+  --color-danger: 0 70% 56%;
+
+  --radius-lg: 0.9rem;
+  --radius-xl: 1.35rem;
+  --radius-2xl: 1.8rem;
+}
+
+h1, h2, h {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 400;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: theme('fontFamily.sans');
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-border/60 bg-muted shadow-soft;
+  }
+}
+
+/* Scroll reveal – dám default VISIBLE, aby nikdy nezmizli natrvalo,
+   a script iba pridá jemný „vybehnutie“ efekt navrch. */
+
+.sr {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.sr.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* INIT class – pridáme ju scriptom, NIE serverom.
+   Ak script nebeží, elements nebudú mať sr-init → ostanú normálne. */
+.sr.sr-init {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+/* === HERO ANIMÁCIE === */
+
+@keyframes hero-bg-pan {
+  0% {
+    transform: scale(1.06) translateY(8px);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1.02) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes hero-content-in {
+  0% {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-sub-in {
+  0% {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-cta-in {
+  0% {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes hero-strip-in {
+  0% {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* helper triedy pre hero */
+
+.hero-bg-layer {
+  animation: hero-bg-pan 6s ease-out forwards;
+  transform-origin: center center;
+}
+
+.hero-eyebrow {
+  animation: hero-content-in 0.7s ease-out forwards;
+  animation-delay: 0.05s;
+  opacity: 0;
+}
+
+.hero-title {
+  animation: hero-content-in 0.8s ease-out forwards;
+  animation-delay: 0.12s;
+  opacity: 0;
+}
+
+.hero-subtitle {
+  animation: hero-sub-in 0.9s ease-out forwards;
+  animation-delay: 0.22s;
+  opacity: 0;
+}
+
+.hero-cta-row {
+  animation: hero-cta-in 0.9s ease-out forwards;
+  animation-delay: 0.32s;
+  opacity: 0;
+}
+
+.hero-stats {
+  animation: hero-sub-in 1s ease-out forwards;
+  animation-delay: 0.46s;
+  opacity: 0;
+}
+
+.hero-info-strip {
+  animation: hero-strip-in 0.9s ease-out forwards;
+  animation-delay: 0.6s;
+  opacity: 0;
+}
+
+/* === SERVICES – 1 row responsive cards === */
+
+.services-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;         /* mobile: karty pod sebou */
+}
+
+/* základ: mobile – 1 card na riadok, fixná výška */
+.services-card {
+  flex: 1 1 100%;
+  height: 280px;
+}
+
+/* od md vyššie – všetko do JEDNÉHO riadku, šírka kariet sa plynule mení */
+@media (min-width: 768px) {
+  .services-row {
+    flex-wrap: nowrap;     /* nič sa nezalamuje do ďalšieho riadku */
+  }
+
+  .services-card {
+    flex: 1 1 0;
+    min-width: 180px;      /* karty sa môžu zmenšiť, ale nie pod 180px */
+    max-width: 320px;      /* a nie väčšie ako 320px */
+    height: 320px;         /* fixná výška na väčších screeoch */
+  }
+}
+

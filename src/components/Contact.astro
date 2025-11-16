@@ -1,0 +1,120 @@
+---
+import Section from './Section.astro';
+
+interface Props {
+  id?: string;
+  contact: {
+    heading: string;
+    addressTitle?: string;
+    addressLines: string[];
+    phone: string;
+    email: string;
+    hours?: string[];
+    mapEmbedUrl?: string;
+    socials?: { label: string; href: string }[];
+  };
+}
+
+const { id = 'contact', contact } = Astro.props;
+---
+<Section id={id} tone="default">
+  <div class="grid gap-8 md:grid-cols-[minmax(0,1.2fr)_minmax(0,0.9fr)] md:items-start">
+    <div class="sr">
+      <h2 class="text-3xl md:text-4xl font-semibold tracking-tight">
+        {contact.heading}
+      </h2>
+      <p class="mt-3 text-sm text-foreground/75">
+        Ozvi sa, rezervuj si termín alebo sa len zastav na kávu a pozri si priestor.
+      </p>
+
+      <div class="mt-6 space-y-5 text-sm">
+        <div>
+          <h3 class="text-xs font-semibold uppercase tracking-wide text-foreground/60">
+            {contact.addressTitle || 'Adresa'}
+          </h3>
+          <p class="mt-1 text-foreground/85">
+            {contact.addressLines.map((line, idx) => (
+              <>
+                {line}
+                {idx < contact.addressLines.length - 1 && <br />}
+              </>
+            ))}
+          </p>
+        </div>
+
+        <div class="grid gap-4 md:grid-cols-2">
+          <div>
+            <h3 class="text-xs font-semibold uppercase tracking-wide text-foreground/60">
+              Kontakt
+            </h3>
+            <p class="mt-1 text-foreground/85">
+              Tel:{' '}
+              <a href={`tel:${contact.phone}`} class="font-semibold text-primary-soft">
+                {contact.phone}
+              </a>
+              <br />
+              E-mail:{' '}
+              <a
+                href={`mailto:${contact.email}`}
+                class="font-semibold text-primary-soft"
+              >
+                {contact.email}
+              </a>
+            </p>
+          </div>
+          {contact.hours && (
+            <div>
+              <h3 class="text-xs font-semibold uppercase tracking-wide text-foreground/60">
+                Otváracie hodiny
+              </h3>
+              <ul class="mt-1 space-y-0.5 text-foreground/85">
+                {contact.hours.map((line) => (
+                  <li>{line}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+
+        {contact.socials && contact.socials.length > 0 && (
+          <div>
+            <h3 class="text-xs font-semibold uppercase tracking-wide text-foreground/60">
+              Sociálne siete
+            </h3>
+            <div class="mt-1 flex flex-wrap gap-3 text-xs">
+              {contact.socials.map((social) => (
+                <a
+                  href={social.href}
+                  class="text-foreground/75 underline-offset-2 hover:text-primary-soft hover:underline"
+                >
+                  {social.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+
+    <div class="sr card h-full rounded-2xl p-3 md:p-4">
+      {contact.mapEmbedUrl ? (
+        <div class="aspect-[4/3] overflow-hidden rounded-xl">
+          <iframe
+            src={contact.mapEmbedUrl}
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            class="h-full w-full border-0"
+          />
+        </div>
+      ) : (
+        <div class="flex aspect-[4/3] items-center justify-center rounded-xl bg-muted-strong text-xs text-foreground/65">
+          Placeholder: Google Maps embed s polohou barbershopu
+        </div>
+      )}
+      <p class="mt-3 text-[11px] text-foreground/65">
+        Parkovanie je možné v okolí ulice alebo na platených parkoviskách v pešej
+        vzdialenosti.
+      </p>
+    </div>
+  </div>
+</Section>

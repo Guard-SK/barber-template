@@ -1,0 +1,25 @@
+---
+import '../styles/global.css';           // ⬅️ DÔLEŽITÉ – natiahne tailwind + naše farby
+import ScrollRevealScript from '../components/ScrollRevealScript.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="sk">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+  </head>
+  <body>
+    {/* script až PO importe CSS, nech fungujú animácie */}
+    <ScrollRevealScript />
+    <slot />
+  </body>
+</html>

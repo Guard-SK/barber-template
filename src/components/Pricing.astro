@@ -1,0 +1,78 @@
+---
+import Section from './Section.astro';
+
+interface PricingItem {
+  name: string;
+  description?: string;
+  price: string;
+  duration?: string;
+}
+
+interface PricingCategory {
+  name: string;
+  items: PricingItem[];
+}
+
+interface Props {
+  id?: string;
+  pricing: {
+    note?: string;
+    categories: PricingCategory[];
+  };
+}
+
+const { id = 'pricing', pricing } = Astro.props;
+---
+<Section id={id} tone="muted">
+  <div class="mb-8 max-w-xl sr">
+    <h2 class="text-4xl md:text-5xl font-semibold tracking-tight">
+      Cenník
+    </h2>
+  </div>
+
+  {/* grid na kategórie – 1 column mobile, 2 columns na md+ */}
+  <div class="grid gap-4 md:grid-cols-2">
+    {pricing.categories.map((category, index) => (
+      <section
+        class="rounded-2xl bg-muted-strong/60 p-4 md:p-5 sr"
+        style={`transition-delay: ${index * 60}ms;`}
+      >
+        <div class="mb-3 flex items-center justify-between gap-3">
+          <h3 class="text-sm font-semibold tracking-tight">
+            {category.name}
+          </h3>
+          <span class="text-[11px] uppercase tracking-wide text-foreground/55">
+            Fixný cenník
+          </span>
+        </div>
+
+        <div class="divide-y divide-border/50 text-xs">
+          {category.items.map((item) => (
+            <div class="flex flex-col gap-1 py-2.5 md:flex-row md:items-start md:justify-between md:gap-4">
+              <div>
+                <div class="font-medium text-foreground">
+                  {item.name}
+                </div>
+                {item.description && (
+                  <p class="text-[11px] text-foreground/70">
+                    {item.description}
+                  </p>
+                )}
+              </div>
+              <div class="flex flex-col items-start md:items-end">
+                <span class="text-sm font-semibold text-primary-soft">
+                  {item.price}
+                </span>
+                {item.duration && (
+                  <span class="text-[11px] text-foreground/55">
+                    {item.duration}
+                  </span>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    ))}
+  </div>
+</Section>

@@ -1,0 +1,38 @@
+---
+interface Props {
+  brand: {
+    name: string;
+  };
+  footer: {
+    legalName?: string;
+    ico?: string;
+    links?: { label: string; href: string }[];
+  };
+}
+
+const { brand, footer } = Astro.props;
+---
+<footer class="border-t border-border/70 bg-black">
+  <div class="container max-w-6xl flex flex-col gap-4 py-6 text-xs text-foreground/60 md:flex-row md:items-center md:justify-between">
+    <div>
+      <div class="font-semibold text-foreground">
+        {brand.name}
+      </div>
+      {footer.legalName && <div>{footer.legalName}</div>}
+      {footer.ico && <div>{footer.ico}</div>}
+    </div>
+    <div class="flex flex-wrap items-center gap-3">
+      {footer.links?.map((link) => (
+        <a
+          href={link.href}
+          class="text-foreground/70 underline-offset-2 hover:text-primary-soft hover:underline"
+        >
+          {link.label}
+        </a>
+      ))}
+      <span class="text-foreground/50">
+        © {new Date().getFullYear()} – Všetky práva vyhradené
+      </span>
+    </div>
+  </div>
+</footer>

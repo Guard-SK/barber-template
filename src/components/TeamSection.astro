@@ -1,0 +1,79 @@
+---
+import Section from './Section.astro';
+import Button from './Button.astro';
+
+interface TeamMember {
+  name: string;
+  role: string;
+  bio: string;
+  imageAlt?: string;
+  bookingLabel?: string;
+}
+
+interface Team {
+  enabled?: boolean;
+  members: TeamMember[];
+}
+
+interface Props {
+  team: Team;
+}
+
+const { team } = Astro.props;
+
+if (!team?.enabled || !team.members?.length) {
+  return null;
+}
+---
+<Section id="team" tone="muted">
+  <div class="mb-10 max-w-xl sr">
+    <h2 class="text-3xl md:text-4xl font-semibold tracking-tight">
+      Tím barberov
+    </h2>
+    <p class="mt-3 text-sm text-foreground/75">
+      Každý barber má vlastný rukopis, ale rovnaký dôraz na detail. Vyber si
+      človeka, pri ktorom sa cítiš najkomfortnejšie.
+    </p>
+  </div>
+
+  <div class="grid gap-6 md:grid-cols-3">
+    {team.members.map((member, index) => (
+      <article
+        class="sr flex h-full flex-col overflow-hidden rounded-2xl bg-muted-strong shadow-soft"
+        style={`transition-delay: ${60 + index * 60}ms;`}
+      >
+        <div class="relative h-40 bg-muted">
+          <img
+            src="/team.jpg"
+            alt={member.imageAlt || `Barber ${member.name} pri práci v kresle.`}
+            class="h-full w-full object-cover"
+            loading="lazy"
+          />
+        </div>
+        <div class="flex flex-1 flex-col p-4">
+          <div>
+            <h3 class="text-sm font-semibold tracking-tight">
+              {member.name}
+            </h3>
+            <p class="mt-1 text-[11px] uppercase tracking-wide text-foreground/60">
+              {member.role}
+            </p>
+          </div>
+          <p class="mt-3 flex-1 text-xs text-foreground/80">
+            {member.bio}
+          </p>
+          {member.bookingLabel && (
+            <div class="mt-4">
+              <Button
+                href="#booking"
+                label={member.bookingLabel}
+                size="sm"
+                variant="outline"
+              />
+            </div>
+          )}
+        </div>
+      </article>
+    ))}
+  </div>
+</Section>

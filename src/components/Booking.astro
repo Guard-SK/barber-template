@@ -1,0 +1,77 @@
+---
+import Section from './Section.astro';
+import Button from './Button.astro';
+
+interface Props {
+  id?: string;
+  booking: {
+    heading: string;
+    subheading?: string;
+    primary: { label: string; href: string; note?: string };
+    secondary?: { label: string; href: string; note?: string };
+    infoLines?: string[];
+  };
+}
+
+const { id = 'booking', booking } = Astro.props;
+---
+<Section id={id} tone="muted">
+  <div class="grid gap-8 md:grid-cols-[minmax(0,1.2fr)_minmax(0,0.9fr)] md:items-center">
+    <div class="sr">
+      <h2 class="text-3xl md:text-4xl font-semibold tracking-tight">
+        {booking.heading}
+      </h2>
+      {booking.subheading && (
+        <p class="mt-3 text-sm text-foreground/75">
+          {booking.subheading}
+        </p>
+      )}
+
+      <div class="mt-6 flex flex-wrap gap-3">
+        <Button
+          href={booking.primary.href}
+          label={booking.primary.label}
+          size="lg"
+          variant="primary"
+        />
+        {booking.secondary && (
+          <Button
+            href={booking.secondary.href}
+            label={booking.secondary.label}
+            size="lg"
+            variant="outline"
+          />
+        )}
+      </div>
+
+      {booking.infoLines && booking.infoLines.length > 0 && (
+        <ul class="mt-5 space-y-1.5 text-xs text-foreground/80">
+          {booking.infoLines.map((line) => (
+            <li>• {line}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+
+    <aside class="sr card rounded-2xl p-5 text-xs">
+      <h3 class="text-sm font-semibold tracking-tight">
+        Ako funguje online booking
+      </h3>
+      <p class="mt-3 text-foreground/80">
+        Online rezervácie riešime cez externý booking systém (napr. Bookio,
+        Fresha, Reservio…). Kliknutím na „Rezervovať termín online“ prejdeš do
+        rozhrania, kde si vyberieš barbera, službu a čas.
+      </p>
+      {booking.primary.note && (
+        <p class="mt-3 text-[11px] text-foreground/65">
+          {booking.primary.note}
+        </p>
+      )}
+      {booking.secondary?.note && (
+        <p class="mt-1 text-[11px] text-foreground/65">
+          {booking.secondary.note}
+        </p>
+      )}
+    </aside>
+  </div>
+</Section>

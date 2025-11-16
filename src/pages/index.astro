@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Hero from '../components/Hero.astro';
+import Services from '../components/Services.astro';
+import Pricing from '../components/Pricing.astro';
+import AboutSection from '../components/AboutSection.astro';
+import TeamSection from '../components/TeamSection.astro';
+import ReviewsSection from '../components/ReviewsSection.astro';
+import Gallery from '../components/Gallery.astro';
+import Booking from '../components/Booking.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+
+import { siteConfig } from '../data/siteConfig';
+---
+<BaseLayout title={siteConfig.meta.title} description={siteConfig.meta.description}>
+  <Navbar
+    brand={siteConfig.brand}
+    navItems={siteConfig.navigation}
+    bookingHref={siteConfig.booking.primary.href}
+  />
+
+  <Hero
+    eyebrow={siteConfig.hero.eyebrow}
+    title={siteConfig.hero.title}
+    subtitle={siteConfig.hero.subtitle}
+    primaryCta={siteConfig.hero.primaryCta}
+    secondaryCta={siteConfig.hero.secondaryCta}
+    stats={siteConfig.hero.stats}
+  />
+
+  <main>
+    <Services id="services" services={siteConfig.services} />
+    <Pricing id="pricing" pricing={siteConfig.pricing} />
+    <AboutSection about={siteConfig.about} />
+    <TeamSection team={siteConfig.team} />
+    <ReviewsSection reviews={siteConfig.reviews} />
+    <Gallery id="gallery" gallery={siteConfig.gallery} />
+    <Booking id="booking" booking={siteConfig.booking} />
+    <Contact id="contact" contact={siteConfig.contact} />
+  </main>
+
+  <Footer brand={siteConfig.brand} footer={siteConfig.footer} />
+</BaseLayout>

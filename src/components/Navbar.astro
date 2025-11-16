@@ -1,0 +1,58 @@
+---
+import Button from './Button.astro';
+
+interface NavItem {
+  href: string;
+  label: string;
+}
+
+interface Props {
+  brand: {
+    name: string;
+    shortName: string;
+    cityTag?: string;
+  };
+  navItems: NavItem[];
+  bookingHref?: string;
+}
+
+const { brand, navItems, bookingHref = '#booking' } = Astro.props;
+---
+<header class="sticky top-0 z-30 border-b border-border/60 bg-background/90 backdrop-blur-md">
+  <div class="container max-w-6xl flex items-center justify-between py-3.5 md:py-4">
+    <a href="#hero" class="flex items-center gap-3">
+      <div class="flex h-9 w-9 items-center justify-center rounded-full border border-border/80 bg-muted text-[11px] font-semibold tracking-[0.18em] text-primary-soft">
+        GC
+      </div>
+      <div class="flex flex-col leading-tight">
+        <span class="text-sm font-semibold tracking-tight text-foreground">
+          {brand.shortName}
+        </span>
+        {brand.cityTag && (
+          <span class="text-[11px] text-foreground/60">
+            {brand.cityTag}
+          </span>
+        )}
+      </div>
+    </a>
+
+    <nav class="hidden items-center gap-7 text-xs md:flex">
+      {navItems.map((item) => (
+        <a
+          href={item.href}
+          class="text-foreground/70 transition-colors hover:text-primary-soft"
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <div class="hidden md:block">
+      <Button href={bookingHref} label="Rezervovať" size="sm" variant="primary" />
+    </div>
+
+    <div class="md:hidden">
+      <Button href={bookingHref} label="Book" size="sm" variant="primary" />
+    </div>
+  </div>
+</header>

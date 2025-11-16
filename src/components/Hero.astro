@@ -1,0 +1,139 @@
+---
+import Button from './Button.astro';
+
+interface Stat {
+  label: string;
+  value: string;
+}
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  primaryCta?: { label: string; href: string };
+  secondaryCta?: { label: string; href: string };
+  stats?: Stat[];
+}
+
+const { eyebrow, title, subtitle, primaryCta, secondaryCta, stats = [] } =
+  Astro.props;
+---
+<section
+  id="hero"
+  class="relative min-h-[88vh] bg-black text-white"
+>
+  {/* background image + gradient */}
+  <div class="absolute inset-0">
+    <div
+      class="hero-bg-layer h-full w-full bg-cover bg-center"
+      style="background-image: url('/hero.webp');"
+      aria-hidden="true"
+    ></div>
+    {/* mobile: fade zospodu nahor, desktop: zľava doprava */}
+    <div class="absolute hero-bg-layer inset-0 bg-gradient-to-t from-black/80 via-black/45 to-black/10 md:bg-gradient-to-r md:from-black/70 md:via-black/45 md:to-black/10"></div>
+  </div>
+
+  <div class="relative">
+    <div class="container max-w-6xl flex min-h-[88vh] flex-col justify-center py-16 md:py-24">
+      <div class="max-w-2xl">
+        {eyebrow && (
+          <div class="hero-eyebrow mb-3 text-[11px] font-medium uppercase tracking-[0.22em] text-white/60">
+            {eyebrow}
+          </div>
+        )}
+
+        <h1 class="oswald hero-title text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold leading-tight tracking-tight">
+          {title}
+        </h1>
+
+        {subtitle && (
+          <p class="hero-subtitle mt-4 max-w-xl text-sm md:text-base text-white/80">
+            {subtitle}
+          </p>
+        )}
+
+        <div class="hero-cta-row mt-6 flex flex-wrap items-center gap-3">
+          {primaryCta && (
+            <Button
+              href={primaryCta.href}
+              label={primaryCta.label}
+              size="lg"
+              variant="primary"
+            />
+          )}
+          {secondaryCta && (
+            <Button
+              href={secondaryCta.href}
+              label={secondaryCta.label}
+              size="md"
+              variant="outlineOnDark"
+            />
+          )}
+        </div>
+
+        {/* stats – iba od md vyššie, na mobile schované */}
+        {stats.length > 0 && (
+          <div class="hero-stats mt-7 hidden text-xs text-white/70 md:grid md:grid-cols-3 md:gap-6">
+            {stats.map((stat) => (
+              <div class="border-l border-white/25 pl-4">
+                <div class="text-[11px] uppercase tracking-wide">
+                  {stat.label}
+                </div>
+                <div class="mt-1 text-lg font-semibold text-white">
+                  {stat.value}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* spodný info strip – tiež len desktop, na mobile zbytočne clutteruje */}
+      <div class="hero-info-strip mt-10 hidden flex-wrap gap-6 text-xs text-white/75 md:flex">
+        <div>
+          <div class="text-[11px] uppercase tracking-wide text-white/50">
+            Otváracie hodiny
+          </div>
+          <p class="mt-1">
+            Po – Pia: 10:00 – 20:00
+            <br />
+            Sobota: 10:00 – 16:00
+          </p>
+        </div>
+        <div>
+          <div class="text-[11px] uppercase tracking-wide text-white/50">
+            Adresa
+          </div>
+          <p class="mt-1">
+            Štefánikova 12
+            <br />
+            811 05 Bratislava – Staré Mesto
+          </p>
+        </div>
+        <div>
+          <div class="text-[11px] uppercase tracking-wide text-white/50">
+            Kontakt
+          </div>
+          <p class="mt-1">
+            Tel:{' '}
+            <a href="tel:+421900000000" class="font-semibold text-white">
+              +421 900 000 000
+            </a>
+            <br />
+            info@goldenchair.sk
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {/* overlay nadpis SLUŽBY, ktorý preteká cez spodok hero */}
+  <div class="pointer-events-none absolute inset-x-0 bottom-[-3.6rem] flex justify-center">
+    <h2
+      id="services"
+      class="oswald services-title select-none text-[3rem] sm:text-[3.4rem] md:text-[3.8rem] lg:text-[4.2rem] font-semibold uppercase tracking-[0.2em] text-white/95 mix-blend-screen [text-shadow:0_18px_50px_rgba(0,0,0,0.95)]"
+    >
+      Služby
+    </h2>
+  </div>
+</section>
