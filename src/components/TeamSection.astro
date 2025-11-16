@@ -1,76 +1,102 @@
 ---
 import Section from './Section.astro';
-import Button from './Button.astro';
 
-interface TeamMember {
+interface Barber {
   name: string;
-  role: string;
-  bio: string;
+  role?: string; // napr. Senior Barber, Junior Barber...
+  instagram?: string; // "@goldenchair.marek" alebo "goldenchair.marek"
+  specialization?: string;
+  imageSrc: string;
   imageAlt?: string;
-  bookingLabel?: string;
-}
-
-interface Team {
-  enabled?: boolean;
-  members: TeamMember[];
 }
 
 interface Props {
-  team: Team;
+  id?: string;
+  title?: string;
+  subtitle?: string;
+  team: Barber[];
 }
 
-const { team } = Astro.props;
+const {
+  id = 'team',
+  title = 'Tím',
+  subtitle = 'Barberi, ktorí sa postarajú o tvoj nový look.',
+  team,
+} = Astro.props;
 
-if (!team?.enabled || !team.members?.length) {
-  return null;
-}
+const getInstaUrl = (handle: string) =>
+  `https://instagram.com/${handle.replace(/^@/, '')}`;
+const getInstaLabel = (handle: string) =>
+  `@${handle.replace(/^@/, '')}`;
 ---
-<Section id="team" tone="muted">
-  <div class="mb-10 max-w-xl sr">
-    <h2 class="text-3xl md:text-4xl font-semibold tracking-tight">
-      Tím barberov
+<Section id={id} tone="default">
+  {/* header */}
+  <div class="sr mb-8 text-center">
+    <h2 class="oswald text-4xl md:text-5xl font-semibold tracking-tight">
+      {title}
     </h2>
-    <p class="mt-3 text-sm text-foreground/75">
-      Každý barber má vlastný rukopis, ale rovnaký dôraz na detail. Vyber si
-      človeka, pri ktorom sa cítiš najkomfortnejšie.
-    </p>
+    {subtitle && (
+      <p class="mt-3 text-sm md:text-base text-foreground/70 max-w-xl mx-auto">
+        {subtitle}
+      </p>
+    )}
   </div>
 
-  <div class="grid gap-6 md:grid-cols-3">
-    {team.members.map((member, index) => (
+  {/* grid – responsive */}
+  <div class="sr grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    {team.members.map((barber, index) => (
       <article
-        class="sr flex h-full flex-col overflow-hidden rounded-2xl bg-muted-strong shadow-soft"
-        style={`transition-delay: ${60 + index * 60}ms;`}
+        class="group overflow-hidden rounded-2xl border border-border/60 bg-muted-strong/70"
+        style={`transition-delay: ${index * 60}ms;`}
       >
-        <div class="relative h-40 bg-muted">
+        {/* veľká foto tváre */}
+        <div class="relative aspect-[4/5] sm:aspect-[3/4]">
           <img
-            src="/team.jpg"
-            alt={member.imageAlt || `Barber ${member.name} pri práci v kresle.`}
-            class="h-full w-full object-cover"
+            src={barber.imageSrc}
+            alt={
+              barber.imageAlt ||
+              `Portrét barbera ${barber.name}.`
+            }
             loading="lazy"
+            class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+          />
+
+          {/* jemný fade, nech text dole ostane čitateľný ak by si ho chcel dať na obrazok */}
+          <div
+            class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"
+            aria-hidden="true"
           />
         </div>
-        <div class="flex flex-1 flex-col p-4">
-          <div>
-            <h3 class="text-sm font-semibold tracking-tight">
-              {member.name}
+
+        {/* textová časť */}
+        <div class="flex flex-col gap-1.5 p-4 md:p-5">
+          <div class="flex items-baseline justify-between gap-3">
+            <h3 class="text-sm font-semibold text-foreground">
+              {barber.name}
             </h3>
-            <p class="mt-1 text-[11px] uppercase tracking-wide text-foreground/60">
-              {member.role}
-            </p>
+            {barber.role && (
+              <span class="text-[11px] uppercase tracking-wide text-foreground/55">
+                {barber.role}
+              </span>
+            )}
           </div>
-          <p class="mt-3 flex-1 text-xs text-foreground/80">
-            {member.bio}
-          </p>
-          {member.bookingLabel && (
-            <div class="mt-4">
-              <Button
-                href="#booking"
-                label={member.bookingLabel}
-                size="sm"
-                variant="outline"
-              />
-            </div>
+
+          {barber.instagram && (
+            <a
+              href={getInstaUrl(barber.instagram)}
+              target="_blank"
+              rel="noreferrer"
+              class="inline-flex items-center gap-1 text-xs font-medium text-primary-soft hover:text-primary underline-offset-2 hover:underline"
+            >
+              <span>{getInstaLabel(barber.instagram)}</span>
+              <span class="text-[10px]">↗</span>
+            </a>
+          )}
+
+          {barber.specialization && (
+            <p class="mt-1 text-xs text-foreground/75">
+              {barber.specialization}
+            </p>
           )}
         </div>
       </article>

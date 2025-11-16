@@ -187,7 +187,9 @@ export const siteConfig = {
         name: 'Martin “Goldie” Kováč',
         role: 'Head barber & founder',
         bio: 'Špecializuje sa na presné fade-y, klasické business strihy a celkový styling podľa tvaru tváre.',
+        imageSrc: '/team_1.jpg',
         imageAlt: 'Martin strihá zákazníka v kresle.',
+        instagram: '@marek_cutslife',
         bookingLabel: 'Booknuť k Martinovi',
       },
       {
@@ -195,6 +197,8 @@ export const siteConfig = {
         role: 'Barber – brady & rituály',
         bio: 'Miluje prácu s bradou, tradičné holenie a rituály s horúcim uterákom.',
         imageAlt: 'Patrik pripravuje horúci uterák na holenie.',
+        imageSrc: '/team_2.jpg',
+        instagram: '@patrik_barber',
         bookingLabel: 'Booknuť k Patrikovi',
       },
       {
@@ -202,6 +206,8 @@ export const siteConfig = {
         role: 'Fade & moderné strihy',
         bio: 'Zameriava sa na moderné strihy, skin fade a textúrované účesy.',
         imageAlt: 'Adam dokončuje prechody na skin fade.',
+        imageSrc: '/team_3.jpg',
+        instagram: '@adam_barber',
         bookingLabel: 'Booknuť k Adamovi',
       },
     ],

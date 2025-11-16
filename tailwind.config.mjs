@@ -32,7 +32,7 @@ export default {
         '2xl': 'var(--radius-2xl)',
       },
       boxShadow: {
-        soft: '0 22px 55px rgba(15, 23, 42, 0.6)',
+        soft: '0 22px 55px hsla(55 47.4% 11.2% / 0.6)',
       },
       fontFamily: {
         sans: ['system-ui', 'SF Pro Text', 'Inter', 'sans-serif'],
